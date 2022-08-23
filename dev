@@ -1,0 +1,23 @@
+#!/bin/bash
+while [ "$1" != "" ]
+do
+    case "$1" in
+        frontend)
+            docker-compose -f docker/docker-compose.dev.yml run -p 9000:9000 frontend bash
+            ;;
+        start)
+            yarn install
+            yarn start
+            ;;
+        down)
+            docker-compose -f docker/docker-compose.dev.yml down
+            ;;
+        docker-restart)
+            docker start $(docker ps -a -q -f status=exited)
+            ;;
+        -h | --help)
+            echo $"Usage: $0 {frontend|down|start|docker-restart}"
+            exit 1
+    esac
+    shift
+done
